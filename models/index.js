@@ -12,21 +12,6 @@ Post.belongsTo(User, {
   onDelete: 'SET NULL'
 });
 
-User.belongsToMany(Post, {
-  through: Vote,
-  as: 'voted_posts',
-
-  foreignKey: 'user_id',
-  onDelete: 'SET NULL'
-});
-
-Post.belongsToMany(User, {
-  through: Vote,
-  as: 'voted_posts',
-  foreignKey: 'post_id',
-  onDelete: 'SET NULL'
-});
-
 
 Comment.belongsTo(User, {
   foreignKey: 'user_id',
@@ -40,11 +25,12 @@ Comment.belongsTo(Post, {
 
 User.hasMany(Comment, {
   foreignKey: 'user_id',
-  onDelete: 'SET NULL'
+  onDelete: 'cascade'
 });
 
 Post.hasMany(Comment, {
-  foreignKey: 'post_id'
+  foreignKey: 'post_id',
+  onDelete: 'cascade'
 });
 
 module.exports = { User, Post, Vote, Comment };
