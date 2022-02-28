@@ -16,6 +16,10 @@ router.get('/', (req, res) => {
     ],
     include: [
       {
+        model: User,
+        attributes: ['username']
+      },
+      {
         model: Comment,
         attributes: ['id', 'comment_text', 'post_id', 'user_id', 'created_at'],
         include: {
@@ -23,10 +27,7 @@ router.get('/', (req, res) => {
           attributes: ['username']
         }
       },
-      {
-        model: User,
-        attributes: ['username']
-      }
+      
     ]
   })
     .then(dbPostData => res.json(dbPostData))
@@ -43,7 +44,7 @@ router.get('/:id', (req, res) => {
     },
     attributes: [
       'id',
-      'post_url',
+      'content',
       'title',
       'created_at',
      
@@ -77,7 +78,7 @@ router.get('/:id', (req, res) => {
 });
 
 router.post('/', withAuth, (req, res) => {
-  // expects {title: 'Taskmaster goes public!', post_url: 'https://taskmaster.com/press', user_id: 1}
+  
   Post.create({
     title: req.body.title,
     content: req.body.content,
@@ -117,7 +118,7 @@ router.put('/:id', withAuth, (req, res) => {
 });
 
 router.delete('/:id', withAuth, (req, res) => {
-  console.log('id', req.params.id);
+ 
   Post.destroy({
     where: {
       id: req.params.id

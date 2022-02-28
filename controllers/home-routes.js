@@ -4,14 +4,14 @@ const { Post, User, Comment } = require('../models');
 
 // get all posts for homepage
 router.get('/', (req, res) => {
-  console.log('======================');
+  
   Post.findAll({
     attributes: [
       'id',
-      'post_url',
       'title',
-      'created_at',
-      [sequelize.literal('(SELECT COUNT(*) FROM vote WHERE post.id = vote.post_id)'), 'vote_count']
+      'content',
+      'created_at'
+     
     ],
     include: [
       {
@@ -42,7 +42,13 @@ router.get('/', (req, res) => {
     });
 });
 
-// get single post
+
+
+router.get('/signup', (req, res) => {
+  res.render('signup');
+});
+
+
 router.get('/post/:id', (req, res) => {
   Post.findOne({
     where: {
@@ -50,10 +56,10 @@ router.get('/post/:id', (req, res) => {
     },
     attributes: [
       'id',
-      'post_url',
+      'content',
       'title',
-      'created_at',
-      [sequelize.literal('(SELECT COUNT(*) FROM vote WHERE post.id = vote.post_id)'), 'vote_count']
+      'created_at'
+     
     ],
     include: [
       {
